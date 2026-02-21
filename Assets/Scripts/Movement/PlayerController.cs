@@ -124,13 +124,22 @@ namespace Movement
             HandleAttackInput();
             ApplyMovement();
             animator.SetBool("IsMoving", isMoving); // Mise à jour du paramètre d'animation de déplacement
-            if (currentComboStep > 0)
+            if (currentComboStep > 0 && currentComboStep <= 1)
             {
                 animator.SetLayerWeight(1, 1); // Active la couche d'attaque
             }
             else
             {
                 animator.SetLayerWeight(1, 0); // Désactive la couche d'attaque
+            }
+
+            if (currentComboStep == 2)
+            {
+                animator.SetLayerWeight(2, 1); // Active la couche du dernier coup
+            }
+            else
+            {
+                animator.SetLayerWeight(2, 0); // Désactive la couche du dernier coup
             }
         }
 
