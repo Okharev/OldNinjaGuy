@@ -7,6 +7,16 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: bois_arbre
+    second: {fileID: 2100000, guid: b15de57aadfa3a44097980c4600e8dd8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: feuilles_arbres
+    second: {fileID: 2100000, guid: 3b05083c6847eca4ca81191c6279e15f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: lambert4
     second: {fileID: 2100000, guid: b15de57aadfa3a44097980c4600e8dd8, type: 2}
   materials:

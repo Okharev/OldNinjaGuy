@@ -3,7 +3,27 @@ guid: 5501f07f66370e54da1b97c4ff4f5aee
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tuiles_01
+    second: {fileID: 2100000, guid: 196787f1967bd19469c3bb061f1e7199, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wall_01
+    second: {fileID: 2100000, guid: b38fac409cac61745b8d2f5d9681baeb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Windows
+    second: {fileID: 2100000, guid: 0f1c99ac421d1924f89fcbaa11156cef, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood
+    second: {fileID: 2100000, guid: b15de57aadfa3a44097980c4600e8dd8, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
