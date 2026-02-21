@@ -49,6 +49,7 @@ namespace Movement
         public float lastAttackAoeRadius = 4f; // NOUVEAU
 
         private CharacterController controller;
+        [SerializeField] private bool isMoving = false;
         private Vector3 movementInput;
         private Vector3 movementDirection;
         private Vector3 lockedDashDirection;
@@ -117,10 +118,20 @@ namespace Movement
 
         void Update()
         {
+            isMoving = movementInput.magnitude > 0.1f;
             GatherInput();
             HandleDashInput();
             HandleAttackInput();
             ApplyMovement();
+            animator.SetBool("IsMoving", isMoving); // Mise à jour du paramètre d'animation de déplacement
+            if (currentComboStep > 0)
+            {
+                animator.SetLayerWeight(1, 1); // Active la couche d'attaque
+            }
+            else
+            {
+                animator.SetLayerWeight(1, 0); // Désactive la couche d'attaque
+            }
         }
 
         void GatherInput()
