@@ -36,7 +36,7 @@ Material:
     - _OutlineBlend: 0.8
     - _OutlineOpacity: 0.8
     - _PixelHeight: 180
-    - _PixelSize: 6
+    - _PixelSize: 4
     - _ReverseDepthThreshold: 0.283
     m_Colors:
     - _LightDirection: {r: -0.96, g: -0.18, b: 0.2, a: 0}
