@@ -1,47 +1,62 @@
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections; // REQUIS pour les Coroutines
+using System;
+using System.Collections;
 
 namespace Movement
 {
     [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyController : MonoBehaviour
     {
+        // --- UI REGISTRATION EVENTS ---
+        public static event Action<EnemyController> OnEnemySpawned;
+        public static event Action<EnemyController> OnEnemyDespawned;
+        public event Action<float> OnHealthChanged;
+
         [Header("Stats & Santé")]
         public int maxHealth = 50;
         private int currentHealth;
 
         [Header("Feedback Visuel")]
-        [Tooltip("Glisse ici le(s) Renderer(s) de l'ennemi (le corps, l'armure, etc.)")]
         public Renderer[] enemyRenderers; 
-        [Tooltip("La couleur du flash (souvent rouge ou blanc)")]
         public Color flashColor = Color.red;
-        [Tooltip("Durée du flash en secondes")]
         public float flashDuration = 0.1f;
 
         [Header("Ciblage")]
         public string playerTag = "Player";
         private Transform playerTransform;
+        private HealthComponent playerHealth; // [ADDED] Reference to the player's health
 
         [Header("Paramètres de combat")]
         public float attackRange = 2f; 
-        public float attackCooldown = 1.5f; 
+        public float attackCooldown = 1.5f;
+        public int attackDamage = 15;         // [ADDED] How much damage the enemy deals
+        public float attackWindupTime = 0.5f; // [ADDED] Must stay in range for 0.5s to hit
 
         private NavMeshAgent agent;
         private float lastAttackTime;
         private float attackRangeSqr; 
+        private float timeInRange;            // [ADDED] Tracks how long the player is in range
 
         private Vector3 knockbackVelocity;
         private float knockbackDuration;
-        
-        // Pour mémoriser les couleurs de base de chaque partie du corps
         private Color[] originalColors;
+
+        void OnEnable()
+        {
+            currentHealth = maxHealth;
+            OnEnemySpawned?.Invoke(this); 
+        }
+
+        void OnDisable()
+        {
+            OnEnemyDespawned?.Invoke(this);
+        }
 
         void Start()
         {
             agent = GetComponent<NavMeshAgent>();
             attackRangeSqr = attackRange * attackRange;
-            currentHealth = maxHealth;
 
             // Initialisation du feedback visuel
             if (enemyRenderers.Length > 0)
@@ -49,13 +64,17 @@ namespace Movement
                 originalColors = new Color[enemyRenderers.Length];
                 for (int i = 0; i < enemyRenderers.Length; i++)
                 {
-                    // On mémorise la couleur de base du matériau
                     originalColors[i] = enemyRenderers[i].material.color;
                 }
             }
 
+            // Find the player AND their HealthComponent
             GameObject playerObj = GameObject.FindGameObjectWithTag(playerTag);
-            if (playerObj != null) playerTransform = playerObj.transform;
+            if (playerObj != null) 
+            {
+                playerTransform = playerObj.transform;
+                playerHealth = playerObj.GetComponent<HealthComponent>();
+            }
         }
 
         void Update()
@@ -73,16 +92,25 @@ namespace Movement
             Vector3 directionToPlayer = playerTransform.position - transform.position;
             float distanceToPlayerSqr = directionToPlayer.sqrMagnitude;
 
-            if (distanceToPlayerSqr <= attackRangeSqr) AttackPlayer();
-            else ChasePlayer();
+            if (distanceToPlayerSqr <= attackRangeSqr) 
+            {
+                AttackPlayer();
+            }
+            else 
+            {
+                ChasePlayer();
+                timeInRange = 0f; // [ADDED] Reset windup timer if player escapes range
+            }
         }
 
         public void TakeDamage(int damage, Vector3 sourcePosition, float knockbackForce)
         {
             currentHealth -= damage;
             
-            // DÉCLENCHEMENT DU FLASH
-            StopAllCoroutines(); // On arrête un éventuel flash en cours
+            float healthPercent = Mathf.Clamp01((float)currentHealth / maxHealth);
+            OnHealthChanged?.Invoke(healthPercent);
+
+            StopAllCoroutines(); 
             StartCoroutine(FlashRoutine());
 
             Vector3 knockbackDir = (transform.position - sourcePosition).normalized;
@@ -93,25 +121,15 @@ namespace Movement
             if (currentHealth <= 0) Die();
         }
 
-        // LA COROUTINE DU FLASH
         private IEnumerator FlashRoutine()
         {
-            // Étape 1 : Passer tous les renderers en rouge
             for (int i = 0; i < enemyRenderers.Length; i++)
-            {
-                if (enemyRenderers[i])
-                    enemyRenderers[i].material.color = flashColor;
-            }
+                if (enemyRenderers[i]) enemyRenderers[i].material.color = flashColor;
 
-            // Étape 2 : Attendre un tout petit peu
             yield return new WaitForSeconds(flashDuration);
 
-            // Étape 3 : Remettre les couleurs d'origine
             for (int i = 0; i < enemyRenderers.Length; i++)
-            {
-                if (enemyRenderers[i] != null)
-                    enemyRenderers[i].material.color = originalColors[i];
-            }
+                if (enemyRenderers[i] != null) enemyRenderers[i].material.color = originalColors[i];
         }
 
         private void Die()
@@ -127,15 +145,39 @@ namespace Movement
 
         private void AttackPlayer()
         {
+            // Stop moving to attack
             if (!agent.isStopped) agent.isStopped = true;
+            
+            // Look at the player
             Vector3 lookPos = playerTransform.position - transform.position;
             lookPos.y = 0;
             Quaternion rotation = Quaternion.LookRotation(lookPos);
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f);
 
+            // 1. Check if the cooldown has passed
             if (Time.time >= lastAttackTime + attackCooldown)
             {
-                lastAttackTime = Time.time;
+                // 2. Increase the windup timer
+                timeInRange += Time.deltaTime;
+
+                // 3. If we've been in range for 0.5s, STRIKE!
+                if (timeInRange >= attackWindupTime)
+                {
+                    if (playerHealth != null)
+                    {
+                        // Deal damage, pass position for knockback, and apply a knockback force of 5
+                        playerHealth.TakeDamage(attackDamage, transform.position, 5f);
+                    }
+
+                    // Reset timers
+                    lastAttackTime = Time.time;
+                    timeInRange = 0f; // Reset windup so they have to charge the next attack
+                }
+            }
+            else
+            {
+                // Reset windup timer if we are currently on cooldown
+                timeInRange = 0f; 
             }
         }
     }

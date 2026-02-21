@@ -1,0 +1,10 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/Dialoue/DialogueUI.uss?fileID=7433441132597879392&amp;guid=cd479a1d3b30de74e96d233a8afdec10&amp;type=3#DialogueUI"/>
+    <ui:VisualElement name="DialogueContainer" class="dialogue-container">
+        <ui:VisualElement name="DialogueBox" class="dialogue-box">
+            <ui:Label name="CharacterName" text="Nom du Personnage" class="character-name"/>
+            <ui:Label name="DialogueText" text="Ceci est un exemple de texte pour votre système de dialogue. Cliquez n&apos;importe où ici pour continuer." class="dialogue-text"/>
+            <ui:Button name="ClickZone" class="click-zone"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

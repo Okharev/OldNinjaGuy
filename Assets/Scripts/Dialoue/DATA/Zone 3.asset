@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7560397b5d3378a468a5f05601876426, type: 3}
+  m_Name: Zone 3
+  m_EditorClassIdentifier: Assembly-CSharp::Dialoue.DialogueData
+  lines:
+  - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
+    text: Did you have many friends? Or were you popular in the village ?
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
+    text: "Of course I was. Followed my dad\u2019s into being a Ninja to protect
+      the village too.  "
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
+    text: "Had a lot of girls into me, I can tell you! Your grandmother fell in love
+      with how cool I was, didn\u2019t she tell you? "
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
+    text: "I think she said she fell in love with you because you never gave up trying
+      to get her attention for years\u2026  "
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
+    text: "Lies, it\u2019s because I was cool and popular. I was good looking too."
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
+    text: still am *winku winku*
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
+    text: Rock hard Abs and all the things everyone would fall for. And bigger titties
+      than your grandmother AHAHAHAH.
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
+    text: "And that\u2019s not the only bigger thing, if you know what-"
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
+    text: "There are some details I do not want to know, Grandpa\u2026 "
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
+    text: "   Come on, we can\u2019t talk of what we want nowadays, you guys are
+      so close minded. In my days, we were able to say what we want and do what we
+      wanted!  "
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
+    text: "Grandpa\u2026 "
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []

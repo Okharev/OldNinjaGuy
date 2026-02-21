@@ -1,0 +1,6 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/PlayerHUD.uss?fileID=7433441132597879392&amp;guid=e4adcc0314d86574f84027cd36ebaf9c&amp;type=3#PlayerHUD"/>
+    <ui:VisualElement name="PlayerHealthBG" class="player-health-bg">
+        <ui:VisualElement name="PlayerHealthFill" class="player-health-fill"/>
+    </ui:VisualElement>
+</ui:UXML>

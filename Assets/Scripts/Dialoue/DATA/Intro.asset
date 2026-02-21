@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7560397b5d3378a468a5f05601876426, type: 3}
+  m_Name: Intro
+  m_EditorClassIdentifier: Assembly-CSharp::Dialoue.DialogueData
+  lines:
+  - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
+    text: "Here\u2019s my favourite bar, the Licaledo. Gonna buy you your first adult
+      drink ahah!"
+    eventIDs: []
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
+    text: 'Licaledo? Weird name '
+    eventIDs: []
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
+    text: "Weird? That\u2019s a famous drink in France! You know I went there with
+      your dad when he was 18 like you."
+    eventIDs: []
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
+    text: 'Dad never takes me on vacation outside of the Motherland '
+    eventIDs: []
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
+    text: "   He\u2019s poor, that\u2019s why.    Well, life was easier before. Let\u2019s
+      get drinks and I\u2019ll tell you my stories. "
+    eventIDs: []
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
+    text: 'Your stories? What kind? '
+    eventIDs: []
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []
+  - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
+    text: "When I was your age\u2026 "
+    eventIDs:
+    - spawner_intro_1
+    - spawner_intro_2
+    onLineComplete:
+      m_PersistentCalls:
+        m_Calls: []

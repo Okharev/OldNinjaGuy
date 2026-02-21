@@ -1,0 +1,6 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/HealthBar.uss?fileID=7433441132597879392&amp;guid=151fe97ad1be74647a0186125ec982ab&amp;type=3#HealthBar"/>
+    <ui:VisualElement name="BarContainer" class="health-bar-container">
+        <ui:VisualElement name="BarFill" class="health-bar-fill" />
+    </ui:VisualElement>
+</ui:UXML>

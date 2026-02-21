@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Dialoue;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +8,10 @@ namespace Movement
     [RequireComponent(typeof(CharacterController))]
     public class PlayerController : MonoBehaviour
     {
+        [Header("Animation")]
+        [Tooltip("Glisse ici le composant Animator de ton personnage")]
+        public Animator animator;
+        
         [Header("Input Setup")]
         public InputActionReference moveAction;
         public InputActionReference dashAction;
@@ -69,6 +74,9 @@ namespace Movement
 
         private void OnEnable()
         {
+            // On s'abonne à l'événement
+            DialogueManager.OnDialogueStateChanged += HandleDialogueStateChanged;
+
             if (moveAction != null) moveAction.action.Enable();
             if (dashAction != null) dashAction.action.Enable();
             if (attackAction != null) attackAction.action.Enable();
@@ -76,9 +84,35 @@ namespace Movement
 
         private void OnDisable()
         {
-            if (moveAction != null) moveAction.action.Disable();
-            if (dashAction != null) dashAction.action.Disable();
-            if (attackAction != null) attackAction.action.Disable();
+            // IMPORTANT : Toujours se désabonner pour éviter les fuites de mémoire
+            DialogueManager.OnDialogueStateChanged -= HandleDialogueStateChanged;
+
+            if (moveAction != null) moveAction.action.Enable(); // (etc. comme avant)
+        }
+        
+        private void HandleDialogueStateChanged(bool isDialogueActive)
+        {
+            if (isDialogueActive)
+            {
+                // On coupe les entrées
+                moveAction.action.Disable();
+                dashAction.action.Disable();
+                attackAction.action.Disable();
+
+                // On réinitialise les états pour éviter que le joueur reste bloqué 
+                // en pleine course ou attaque
+                movementInput = Vector3.zero;
+                movementDirection = Vector3.zero;
+                isAttacking = false;
+                isDashing = false;
+            }
+            else
+            {
+                // On réactive tout quand le dialogue est fini
+                moveAction.action.Enable();
+                dashAction.action.Enable();
+                attackAction.action.Enable();
+            }
         }
 
         void Update()
@@ -148,6 +182,14 @@ namespace Movement
             attackBufferCounter = 0f; 
             attackTimer = attackDurations[currentComboStep];
             enemiesHitThisAttack.Clear();
+
+            // NOUVEAU : Déclencher l'animation correspondante
+            if (animator != null)
+            {
+                // On crée un nom de Trigger dynamique basé sur l'étape du combo (0, 1 ou 2)
+                // Cela enverra le signal "Attack0", "Attack1" ou "Attack2" à l'Animator
+                animator.SetTrigger("Attack" + currentComboStep); 
+            }
         }
 
         // NOUVEAU : Logique hybride Box/AOE

@@ -1,0 +1,17 @@
+.health-bar-container {
+    position: absolute; /* Vital for moving it around via script */
+    width: 100px;
+    height: 10px;
+    background-color: rgba(32, 32, 32, 0.8);
+    border-radius: 2px;
+    /* Hide by default so we don't see it until positioned */
+    visibility: hidden;
+}
+
+.health-bar-fill {
+    height: 100%;
+    width: 100%; /* Will be changed by script */
+    background-color: #e74c3c; /* Red */
+    border-radius: 2px;
+    transition: width 0.2s ease-out-circ; /* Smooth hit effect */
+}

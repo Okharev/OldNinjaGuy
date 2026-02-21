@@ -1,0 +1,71 @@
+/* Conteneur principal qui prend tout l'écran pour centrer la boîte en bas */
+.dialogue-container {
+    flex-grow: 1;
+    justify-content: flex-end;
+    align-items: center;
+    padding-bottom: 50px;
+    display: none;
+
+    /* Animation */
+    opacity: 0;
+    translate: 0 20px;
+    transition-property: opacity, translate;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-out;
+
+    /* Empêche de cliquer à travers quand c'est invisible */
+    picking-mode: ignore;
+}
+
+/* La boîte de dialogue elle-même */
+.dialogue-box {
+    background-color: rgba(30, 30, 30, 0.9); /* Fond sombre semi-transparent */
+    border-width: 2px;
+    border-color: rgb(255, 255, 255);
+    border-radius: 15px;
+    width: 80%;
+    min-height: 150px;
+    padding: 20px;
+    position: relative; /* Permet au bouton ClickZone de se positionner par rapport à elle */
+}
+
+/* Style du nom du personnage */
+.character-name {
+    -unity-font-style: bold;
+    font-size: 24px;
+    color: rgb(255, 200, 0); /* Un jaune doré pour le nom */
+    margin-bottom: 10px;
+}
+
+/* Style du texte de dialogue */
+.dialogue-text {
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    white-space: normal; /* Permet au texte de revenir à la ligne automatiquement */
+    -unity-text-align: middle-left;
+}
+
+.dialogue-container--visible {
+    display: flex;
+    opacity: 1;
+    translate: 0 0;
+    picking-mode: position; /* Capture les clics */
+}
+
+/* La zone de clic invisible */
+.click-zone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    /* Très important : capture les événements de souris */
+    picking-mode: position;
+}
+
+/* Optionnel : Changement de couleur au survol pour donner un feedback visuel */
+.click-zone:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
