@@ -48,7 +48,10 @@ namespace Movement
         [Tooltip("Rayon du cercle d'explosion pour le dernier coup")]
         public float lastAttackAoeRadius = 4f; // NOUVEAU
 
+        [SerializeField] private GameObject HitVFXPrefab; // Assigne ici ton prefab de VFX d'impact
+
         private CharacterController controller;
+        [SerializeField] private bool isMoving = false;
         private Vector3 movementInput;
         private Vector3 movementDirection;
         private Vector3 lockedDashDirection;
@@ -117,10 +120,29 @@ namespace Movement
 
         void Update()
         {
+            isMoving = movementInput.magnitude > 0.1f;
             GatherInput();
             HandleDashInput();
             HandleAttackInput();
             ApplyMovement();
+            animator.SetBool("IsMoving", isMoving); // Mise à jour du paramètre d'animation de déplacement
+            if (currentComboStep > 0 && currentComboStep <= 1)
+            {
+                animator.SetLayerWeight(1, 1); // Active la couche d'attaque
+            }
+            else
+            {
+                animator.SetLayerWeight(1, 0); // Désactive la couche d'attaque
+            }
+
+            if (currentComboStep == 2)
+            {
+                animator.SetLayerWeight(2, 1); // Active la couche du dernier coup
+            }
+            else
+            {
+                animator.SetLayerWeight(2, 0); // Désactive la couche du dernier coup
+            }
         }
 
         void GatherInput()
@@ -212,11 +234,17 @@ namespace Movement
 
             foreach (Collider hit in hitColliders)
             {
+                
                 if (!enemiesHitThisAttack.Contains(hit))
                 {
                     enemiesHitThisAttack.Add(hit); 
                     EnemyController enemy = hit.GetComponentInParent<EnemyController>();
-                    
+                    // Spawn HitVFX at collision point
+                    if (HitVFXPrefab != null)
+                    {
+                        Vector3 hitPoint = hit.ClosestPoint(transform.position);
+                        Instantiate(HitVFXPrefab, hitPoint, Quaternion.identity);
+                    }
                     if (enemy != null)
                     {
                         // On envoie transform.position : l'ennemi calculera le recul radialement
