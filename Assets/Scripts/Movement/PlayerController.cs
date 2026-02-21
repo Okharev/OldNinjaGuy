@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,51 +10,57 @@ namespace Movement
         [Header("Input Setup")]
         public InputActionReference moveAction;
         public InputActionReference dashAction;
-        public InputActionReference attackAction; // NOUVEAU : L'action pour attaquer
+        public InputActionReference attackAction;
 
         [Header("Movement Settings")]
         public float moveSpeed = 10f;
-        [Tooltip("How fast the character rotates to face their movement. Lower is faster.")]
         public float turnSmoothTime = 0.05f;
 
         [Header("Dash Settings")]
         public float dashSpeed = 30f;
         public float dashDuration = 0.2f;
         public float dashCooldown = 0.5f;
-        [Tooltip("The shape of the dash. Starts at 1 (max speed) and drops to 0.")]
         public AnimationCurve dashCurve = AnimationCurve.EaseInOut(0, 1, 1, 0);
-        [Tooltip("How long to remember a dash input if pressed during cooldown.")]
         public float inputBufferTime = 0.2f;
 
-        [Header("Combat Settings")]
-        [Tooltip("Durée de chaque attaque du combo (Coup 1, Coup 2, Coup 3)")]
+        [Header("Combat Settings (Combo)")]
         public float[] attackDurations = { 0.3f, 0.3f, 0.5f }; 
-        [Tooltip("Temps d'attente maximum avant que le combo ne retombe à zéro")]
         public float comboResetTime = 0.8f;
-        [Tooltip("Permet d'enregistrer la touche d'attaque juste avant la fin de l'attaque précédente")]
         public float attackInputBufferTime = 0.2f;
+        public float[] attackLungeSpeeds = { 3f, 3f, 2f }; // Note: réduit pour le dernier coup pour l'effet d'impact
 
-        // Component references
+        [Header("Combat Settings (Hitbox & Damage)")]
+        public LayerMask enemyLayer;
+        public int[] attackDamages = { 10, 10, 30 };
+        public float[] attackKnockbacks = { 5f, 5f, 20f };
+
+        [Tooltip("Taille de la boîte pour les coups 1 et 2")]
+        public Vector3 normalHitboxSize = new Vector3(2f, 1.5f, 2f);
+        [Tooltip("Distance de la boîte devant le joueur")]
+        public float normalHitboxDistance = 1.5f;
+
+        [Header("Last Attack AOE Settings")]
+        [Tooltip("Rayon du cercle d'explosion pour le dernier coup")]
+        public float lastAttackAoeRadius = 4f; // NOUVEAU
+
         private CharacterController controller;
-        
-        // State tracking (Movement)
         private Vector3 movementInput;
         private Vector3 movementDirection;
         private Vector3 lockedDashDirection;
         private float turnSmoothVelocity;
         
-        // State tracking (Dash)
         private bool isDashing = false;
         private float dashTimer;
         private float nextAvailableDashTime;
         private float dashBufferCounter;
 
-        // State tracking (Combat) - NOUVEAU
         private bool isAttacking = false;
-        private int currentComboStep = 0; // Va de 0 à 2 (pour 3 coups)
+        private int currentComboStep = 0;
         private float attackTimer;
         private float lastAttackEndTime;
         private float attackBufferCounter;
+
+        private HashSet<Collider> enemiesHitThisAttack = new HashSet<Collider>();
 
         void Start()
         {
@@ -64,21 +71,21 @@ namespace Movement
         {
             if (moveAction != null) moveAction.action.Enable();
             if (dashAction != null) dashAction.action.Enable();
-            if (attackAction != null) attackAction.action.Enable(); // NOUVEAU
+            if (attackAction != null) attackAction.action.Enable();
         }
 
         private void OnDisable()
         {
             if (moveAction != null) moveAction.action.Disable();
             if (dashAction != null) dashAction.action.Disable();
-            if (attackAction != null) attackAction.action.Disable(); // NOUVEAU
+            if (attackAction != null) attackAction.action.Disable();
         }
 
         void Update()
         {
             GatherInput();
             HandleDashInput();
-            HandleAttackInput(); // NOUVEAU
+            HandleAttackInput();
             ApplyMovement();
         }
 
@@ -91,20 +98,12 @@ namespace Movement
 
         void HandleDashInput()
         {
-            if (dashAction.action.WasPressedThisFrame())
-            {
-                dashBufferCounter = inputBufferTime;
-            }
-            else
-            {
-                dashBufferCounter -= Time.deltaTime;
-            }
+            if (dashAction.action.WasPressedThisFrame()) dashBufferCounter = inputBufferTime;
+            else dashBufferCounter -= Time.deltaTime;
 
             if (dashBufferCounter > 0f && Time.time >= nextAvailableDashTime && movementInput.magnitude > 0)
             {
-                // Dashing annule l'attaque en cours (Très important pour un jeu style Hades)
                 isAttacking = false; 
-                
                 isDashing = true;
                 dashTimer = dashDuration;
                 nextAvailableDashTime = Time.time + dashCooldown;
@@ -113,61 +112,76 @@ namespace Movement
             }
         }
 
-        // NOUVEAU : Gestion du système de combo
         void HandleAttackInput()
         {
-            // 1. Réinitialiser le combo si on a trop attendu depuis la dernière attaque
             if (!isAttacking && Time.time - lastAttackEndTime > comboResetTime)
             {
                 currentComboStep = 0;
             }
 
-            // 2. Input Buffering pour l'attaque (pour un gameplay fluide)
-            if (attackAction.action.WasPressedThisFrame())
-            {
-                attackBufferCounter = attackInputBufferTime;
-            }
-            else
-            {
-                attackBufferCounter -= Time.deltaTime;
-            }
+            if (attackAction.action.WasPressedThisFrame()) attackBufferCounter = attackInputBufferTime;
+            else attackBufferCounter -= Time.deltaTime;
 
-            // 3. Déclencher l'attaque si on a une entrée en attente et qu'on n'attaque pas déjà (ou qu'on ne dash pas)
             if (attackBufferCounter > 0f && !isAttacking && !isDashing)
             {
                 StartAttack();
             }
 
-            // 4. Gérer le minuteur de l'attaque en cours
             if (isAttacking)
             {
+                PerformHitboxCheck();
+
                 attackTimer -= Time.deltaTime;
                 if (attackTimer <= 0)
                 {
                     isAttacking = false;
-                    lastAttackEndTime = Time.time; // On mémorise quand l'attaque a fini
-                    
-                    // Passer à l'étape suivante du combo, ou revenir à 0 si c'était le 3ème coup
+                    lastAttackEndTime = Time.time; 
                     currentComboStep++;
-                    if (currentComboStep >= attackDurations.Length)
-                    {
-                        currentComboStep = 0;
-                    }
+                    if (currentComboStep >= attackDurations.Length) currentComboStep = 0;
                 }
             }
         }
 
-        // NOUVEAU : Fonction pour démarrer une attaque
         void StartAttack()
         {
             isAttacking = true;
-            attackBufferCounter = 0f; // On consomme l'entrée du joueur
-            
-            // La durée de l'attaque dépend de l'étape du combo
+            attackBufferCounter = 0f; 
             attackTimer = attackDurations[currentComboStep];
+            enemiesHitThisAttack.Clear();
+        }
 
-            // C'est ici que tu déclencheras tes animations et tes boîtes de collision (hitboxes) !
-            Debug.Log($"Attaque {currentComboStep + 1} ! Durée : {attackTimer}s");
+        // NOUVEAU : Logique hybride Box/AOE
+        void PerformHitboxCheck()
+        {
+            Collider[] hitColliders;
+            bool isLastHit = (currentComboStep == attackDurations.Length - 1);
+
+            if (isLastHit)
+            {
+                // AOE Circulaire autour du joueur (360 degrés)
+                hitColliders = Physics.OverlapSphere(transform.position, lastAttackAoeRadius, enemyLayer);
+            }
+            else
+            {
+                // Hitbox classique en boîte devant le joueur
+                Vector3 hitboxCenter = transform.position + transform.forward * normalHitboxDistance;
+                hitColliders = Physics.OverlapBox(hitboxCenter, normalHitboxSize / 2f, transform.rotation, enemyLayer);
+            }
+
+            foreach (Collider hit in hitColliders)
+            {
+                if (!enemiesHitThisAttack.Contains(hit))
+                {
+                    enemiesHitThisAttack.Add(hit); 
+                    EnemyController enemy = hit.GetComponentInParent<EnemyController>();
+                    
+                    if (enemy != null)
+                    {
+                        // On envoie transform.position : l'ennemi calculera le recul radialement
+                        enemy.TakeDamage(attackDamages[currentComboStep], transform.position, attackKnockbacks[currentComboStep]);
+                    }
+                }
+            }
         }
 
         void ApplyMovement()
@@ -180,13 +194,13 @@ namespace Movement
                 float dashProgress = 1f - (dashTimer / dashDuration);
                 float currentDashSpeed = dashSpeed * dashCurve.Evaluate(dashProgress);
                 currentVelocity = lockedDashDirection * currentDashSpeed;
-
-                if (dashTimer <= 0)
-                {
-                    isDashing = false;
-                }
+                if (dashTimer <= 0) isDashing = false;
             }
-            else if (!isAttacking) // NOUVEAU : On ne bouge que si on n'attaque pas
+            else if (isAttacking)
+            {
+                currentVelocity = transform.forward * attackLungeSpeeds[currentComboStep];
+            }
+            else
             {
                 currentVelocity = movementDirection * moveSpeed;
             }
@@ -194,15 +208,9 @@ namespace Movement
             currentVelocity.y += Physics.gravity.y; 
             controller.Move(currentVelocity * Time.deltaTime);
 
-            // Rotation
             Vector3 directionToFace = movementDirection;
             if (isDashing) directionToFace = lockedDashDirection;
-            
-            // NOUVEAU : Si on attaque sans bouger le joystick, on garde la rotation actuelle
-            if (isAttacking && directionToFace == Vector3.zero) 
-            {
-                return; // Ne pas modifier la rotation
-            }
+            if (isAttacking && directionToFace == Vector3.zero) return; 
 
             if (directionToFace != Vector3.zero)
             {
@@ -216,6 +224,26 @@ namespace Movement
         {
             Quaternion cameraRotation = Quaternion.Euler(0, 45, 0);
             return cameraRotation * input;
+        }
+
+        // NOUVEAU : Visualisation des deux types de Hitbox
+        private void OnDrawGizmos()
+        {
+            if (!isAttacking) return;
+
+            Gizmos.color = new Color(1, 0, 0, 0.4f);
+            bool isLastHit = (currentComboStep == attackDurations.Length - 1);
+
+            if (isLastHit)
+            {
+                Gizmos.DrawSphere(transform.position, lastAttackAoeRadius);
+            }
+            else
+            {
+                Vector3 hitboxCenter = transform.position + transform.forward * normalHitboxDistance;
+                Gizmos.matrix = Matrix4x4.TRS(hitboxCenter, transform.rotation, Vector3.one);
+                Gizmos.DrawCube(Vector3.zero, normalHitboxSize);
+            }
         }
     }
 }

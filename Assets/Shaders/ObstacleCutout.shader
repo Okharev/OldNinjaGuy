@@ -53,9 +53,11 @@ Properties
                 float4 _BaseMap_ST;
                 float4 _BaseColor;
                 float _CutoutRadius;
-                // Position du joueur récupérée globalement
-                float4 _GlobalPlayerPosition; 
             CBUFFER_END
+
+            // La position globale du joueur est maintenant à l'extérieur du bloc CBUFFER !
+            // Ainsi, le script C# pourra la mettre à jour correctement.
+            float4 _GlobalPlayerPosition;
 
             // --- VERTEX SHADER ---
             // Prépare les données pour chaque sommet (point) de ton mur

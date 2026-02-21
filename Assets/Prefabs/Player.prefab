@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2971829812787518488}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -114,11 +114,26 @@ MonoBehaviour:
     m_RotationOrder: 4
   inputBufferTime: 0.2
   attackDurations:
-  - 0.3
-  - 0.3
-  - 0.5
+  - 0.1
+  - 0.1
+  - 0.2
   comboResetTime: 0.8
   attackInputBufferTime: 0.2
+  attackLungeSpeeds:
+  - 3
+  - 3
+  - 2
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  attackDamages: 0a0000000a00000019000000
+  attackKnockbacks:
+  - 5
+  - 5
+  - 15
+  normalHitboxSize: {x: 2, y: 1.5, z: 2}
+  normalHitboxDistance: 1.5
+  lastAttackAoeRadius: 4
 --- !u!143 &2376469073874571705
 CharacterController:
   m_ObjectHideFlags: 0
