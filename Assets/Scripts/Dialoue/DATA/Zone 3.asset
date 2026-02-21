@@ -12,53 +12,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7560397b5d3378a468a5f05601876426, type: 3}
   m_Name: Zone 3
   m_EditorClassIdentifier: Assembly-CSharp::Dialoue.DialogueData
+  backgroundArt: {fileID: 2800000, guid: 120bf405064a0bb4ab4d8abadf569db5, type: 3}
   lines:
   - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
     text: Did you have many friends? Or were you popular in the village ?
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "Of course I was. Followed my dad\u2019s into being a Ninja to protect
       the village too.  "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "Had a lot of girls into me, I can tell you! Your grandmother fell in love
       with how cool I was, didn\u2019t she tell you? "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
     text: "I think she said she fell in love with you because you never gave up trying
       to get her attention for years\u2026  "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "Lies, it\u2019s because I was cool and popular. I was good looking too."
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: still am *winku winku*
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: Rock hard Abs and all the things everyone would fall for. And bigger titties
       than your grandmother AHAHAHAH.
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "And that\u2019s not the only bigger thing, if you know what-"
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
     text: "There are some details I do not want to know, Grandpa\u2026 "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
@@ -66,11 +76,13 @@ MonoBehaviour:
     text: "   Come on, we can\u2019t talk of what we want nowadays, you guys are
       so close minded. In my days, we were able to say what we want and do what we
       wanted!  "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
     text: "Grandpa\u2026 "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []

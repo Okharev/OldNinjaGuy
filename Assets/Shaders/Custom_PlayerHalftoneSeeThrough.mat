@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_Obstacle_SeeThrough
-  m_Shader: {fileID: 4800000, guid: 639caf96a89daba4880bdb18aea11b83, type: 3}
+  m_Name: Custom_PlayerHalftoneSeeThrough
+  m_Shader: {fileID: 4800000, guid: 1ab2bda306e14a9ebdbb6e9bcc54bc59, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,16 +23,18 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _BaseMap:
+    - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _CutoutRadius: 4
-    - _CutoutSoftness: 1
+    - _DitherWidth: 0.31
+    - _HalftoneDensity: 0.5
+    - _HalftoneScale: 50
+    - _HoleRadius: 0.26
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _GlobalPlayerPosition: {r: 0, g: 0, b: 0, a: 0}
+    - _SeeThroughColor: {r: 0, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

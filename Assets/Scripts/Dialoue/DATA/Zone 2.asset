@@ -12,20 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7560397b5d3378a468a5f05601876426, type: 3}
   m_Name: Zone 2
   m_EditorClassIdentifier: Assembly-CSharp::Dialoue.DialogueData
+  backgroundArt: {fileID: 2800000, guid: a8977b5b08d9363489a6f4f7a34a6f07, type: 3}
   lines:
   - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
     text: "Right\u2026 tell me another story\u2026"
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "Okay\u2026 "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "When I was your age, we didn\u2019t have all your games and screens\u2026
       we had to find fun with what we had around us."
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
@@ -33,29 +37,34 @@ MonoBehaviour:
     text: "My dad had made me wooden toys, handmade ones. And my mother was a doll-maker.
       I\u2019d invent so many stories with them, and I\u2019d be entertaining myself
       for hours."
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "Or I\u2019d hang out with my neighbours! Play in the village with other
       young people like me.  "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "Kids back then were creative, you know only stare at screens all day long,
       you don\u2019t talk to anyone anymore\u2026  "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "I go out to the playground with my friends everyday after school. Mom
       takes me there\u2026 "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "It isn\u2019t the same, I can tell you that! Let me get another drink\u2026  "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []

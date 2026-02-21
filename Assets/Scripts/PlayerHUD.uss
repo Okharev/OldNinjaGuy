@@ -1,19 +1,64 @@
+/* --- BARRE DE VIE (En haut à gauche) --- */
 .player-health-bg {
     position: absolute;
-    top: 30px;
-    left: 30px;
-    width: 300px;
-    height: 30px;
-    background-color: rgba(20, 20, 20, 0.9);
-    border-radius: 5px;
-    border-width: 3px;
-    border-color: #111111;
+    top: 10px; /* On réduit fortement l'espacement par rapport au haut */
+    left: 10px; /* On réduit l'espacement par rapport à la gauche */
+    width: 400px; /* On l'agrandit beaucoup (tu peux même mettre 800px si besoin) */
+    height: 75px; /* On augmente la hauteur proportionnellement */
+    background-image: url('project://database/Assets/Sprites/UI_HealthBar_Empty.png');
+
+    /* Si l'image a toujours l'air d'avoir du vide autour, essaie de remplacer 
+       scale-to-fit par scale-and-crop ou stretch-to-fill */
+    -unity-background-scale-mode: scale-and-crop;
 }
 
-.player-health-fill {
+.player-health-mask {
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
-    background-color: #2ecc71; /* A nice, vibrant green */
-    border-radius: 2px;
-    transition: width 0.2s ease-out-bounce; /* Snappy, bouncy hit reaction */
+    overflow: hidden;
+    transition: width 0.2s ease-out-bounce;
+}
+
+.player-health-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 400px; /* DOIT être exactement la même valeur que le width de player-health-bg */
+    height: 75px; /* DOIT être exactement la même valeur que le height de player-health-bg */
+    background-image: url('project://database/Assets/Sprites/UI_HealthBar_Fill.png');
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+/* --- GOURDE D'ÉBRIÉTÉ (En bas à gauche) --- */
+.player-drunk-bg {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    width: 150px; /* Taille augmentée */
+    height: 150px;
+    background-image: url('project://database/Assets/Sprites/UI_Gourd_Empty.png');
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.player-drunk-mask {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    overflow: hidden; /* Coupe l'image qui dépasse de la hauteur actuelle */
+    transition: height 0.2s ease-out-bounce;
+}
+
+.player-drunk-image {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 150px; /* DOIT être identique au width de player-drunk-bg */
+    height: 150px; /* DOIT être identique au height de player-drunk-bg */
+    background-image: url('project://database/Assets/Sprites/UI_Gourd_Fill.png');
+    -unity-background-scale-mode: scale-to-fit;
 }

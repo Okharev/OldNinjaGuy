@@ -16,6 +16,19 @@ namespace Movement
         [Tooltip("Lower is snappier, higher is more floaty/smooth.")]
         public float smoothTime = 0.15f;
 
+        [Header("Drunken Camera Wobble (Nouveau !)")]
+        [Tooltip("Contrôlé par le DrunkenEffectManager (0 = sobre, 1 = maximum)")]
+        [Range(0f, 1f)] public float drunkenWobbleIntensity = 0f;
+        
+        [Tooltip("Vitesse de l'oscillation (titubement)")]
+        public float wobbleSpeed = 1.2f;
+        
+        [Tooltip("Distance maximale de dérive de la caméra")]
+        public float positionalWobbleAmount = 1.5f;
+        
+        [Tooltip("Angle maximal d'inclinaison de la caméra (roulis)")]
+        public float rotationalWobbleAmount = 3.5f;
+
         [Header("Pixel Perfect Setup")]
         [Tooltip("Le Material qui utilise ton shader OutlinePixel")]
         public Material postProcessMaterial;
@@ -32,43 +45,63 @@ namespace Movement
         {
             cam = GetComponent<Camera>();
         
-            // 1. Enforce True Isometric Rendering
             cam.orthographic = true;
-        
-            // 2. Enforce the exact isometric angle
             transform.rotation = Quaternion.Euler(30f, 45f, 0f);
         
-            // 3. Snap to the target immediately when the scene starts
             if (target)
             {
                 transform.position = target.position + offset;
             }
         }
 
-        // We use LateUpdate for cameras to ensure the player has already finished moving this frame
         void LateUpdate()
         {
             if (!target) return;
 
-            // Where the camera should ideally be right now
+            // Position de base idéale
             Vector3 desiredPosition = target.position + offset;
 
-            // Smoothly glide towards the desired position
+            // --- DÉBUT DE LA LOGIQUE D'IVRESSE ---
+            if (drunkenWobbleIntensity > 0f)
+            {
+                // Le temps qui avance, multiplié par notre vitesse de titubement
+                float time = Time.time * wobbleSpeed;
+
+                // Le PerlinNoise retourne des valeurs entre 0 et 1.
+                // On fait (valeur - 0.5) * 2 pour avoir un résultat entre -1 et 1 (gauche/droite, haut/bas).
+                // On utilise des coordonnées différentes pour X, Z et Rot pour désynchroniser les mouvements.
+                float noiseX = (Mathf.PerlinNoise(time, 0f) - 0.5f) * 2f;
+                float noiseZ = (Mathf.PerlinNoise(0f, time) - 0.5f) * 2f;
+                float noiseRot = (Mathf.PerlinNoise(time, time + 10f) - 0.5f) * 2f;
+
+                // 1. Dérive de la position
+                Vector3 wobbleOffset = new Vector3(noiseX, 0f, noiseZ) * positionalWobbleAmount * drunkenWobbleIntensity;
+                desiredPosition += wobbleOffset;
+
+                // 2. Inclinaison de la caméra (roulis sur l'axe Z)
+                float currentRoll = noiseRot * rotationalWobbleAmount * drunkenWobbleIntensity;
+                transform.rotation = Quaternion.Euler(30f, 45f, currentRoll);
+            }
+            else
+            {
+                // On s'assure que la caméra est parfaitement droite quand le joueur est sobre
+                transform.rotation = Quaternion.Euler(30f, 45f, 0f);
+            }
+            // --- FIN DE LA LOGIQUE D'IVRESSE ---
+
+            // Déplacement fluide vers la position calculée
             transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref velocity, smoothTime);
         }
 
         // --- DÉBUT DE LA LOGIQUE PIXEL PERFECT (URP) ---
-
         private void OnEnable()
         {
-            // On s'abonne aux événements de rendu de l'URP quand le script est activé
             RenderPipelineManager.beginCameraRendering += OnBeginCameraRendering;
             RenderPipelineManager.endCameraRendering += OnEndCameraRendering;
         }
 
         private void OnDisable()
         {
-            // On se désabonne pour éviter les fuites de mémoire
             RenderPipelineManager.beginCameraRendering -= OnBeginCameraRendering;
             RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
         }
@@ -77,36 +110,26 @@ namespace Movement
         {
             if (camera != cam) return;
 
-            // 1. On sauvegarde la position fluide calculée dans le LateUpdate
             smoothPosition = transform.position;
 
-            // 2. On calcule la taille d'un pixel virtuel dans l'espace du monde
             float unitsPerPixel = (cam.orthographicSize * 2f) / Screen.height;
             float virtualPixelSize = unitsPerPixel * pixelSize;
 
-            // 3. On calcule la position de la caméra alignée sur sa propre vue (View-Aligned)
             float dotRight = Vector3.Dot(smoothPosition, transform.right);
             float dotUp = Vector3.Dot(smoothPosition, transform.up);
 
-            // 4. On claque ces valeurs sur notre grille de pixels virtuels
             float snappedRight = Mathf.Round(dotRight / virtualPixelSize) * virtualPixelSize;
             float snappedUp = Mathf.Round(dotUp / virtualPixelSize) * virtualPixelSize;
 
-            // 5. On calcule la distance exacte de déplacement pour le claquage
             float deltaRight = snappedRight - dotRight;
             float deltaUp = snappedUp - dotUp;
 
-            // 6. On déplace physiquement la caméra sur la position claquée
             transform.position = smoothPosition + (transform.right * deltaRight) + (transform.up * deltaUp);
 
-            // 7. On envoie l'erreur de claquage au Shader pour corriger le mouvement
             if (postProcessMaterial != null)
             {
-                // On convertit le décalage en fraction de pixel (entre -0.5 et 0.5)
                 float offsetX = deltaRight / virtualPixelSize;
                 float offsetY = deltaUp / virtualPixelSize;
-                
-                // Note : Selon la façon dont ton shader gère les UVs, il est parfois nécessaire d'inverser le signe (-offsetX, -offsetY)
                 postProcessMaterial.SetVector("_SubpixelOffset", new Vector4(offsetX, offsetY, 0, 0));
             }
         }
@@ -114,8 +137,6 @@ namespace Movement
         private void OnEndCameraRendering(ScriptableRenderContext context, Camera camera)
         {
             if (camera != cam) return;
-
-            // On restaure la position fluide pour que la logique de jeu (et le LateUpdate) reste intacte
             transform.position = smoothPosition;
         }
     }

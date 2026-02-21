@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7560397b5d3378a468a5f05601876426, type: 3}
   m_Name: Zone 1
   m_EditorClassIdentifier: Assembly-CSharp::Dialoue.DialogueData
+  backgroundArt: {fileID: 2800000, guid: 0da54cfc30045a5438b5b0141ab8847e, type: 3}
   lines:
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "When I was your age, my house was far away from my school, you know\u2026 "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
@@ -22,28 +24,33 @@ MonoBehaviour:
     text: "I had to do long hours of walk to get there, I had to go by myself. No
       bus, no cars to help me get there. I\u2019d wake up at 5 in the morning; can
       you believe that!! "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: 'So, I needed great shoes, I was going through a lot, sometimes even climbing
       rocky paths, or scary places.  '
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "And don\u2019t get me started on the weather; sunny, cloudy, rain or even
       snow, I HAD TO GO BY FOOT.  "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
     text: "Aren\u2019t you a bit dramatic, grandpa...?"
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "Dramatic? Me? Non-sense, get me another drink\u2026 "
+    eventIDs: []
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []

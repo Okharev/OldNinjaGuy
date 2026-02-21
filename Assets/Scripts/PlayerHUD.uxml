@@ -1,6 +1,13 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Scripts/PlayerHUD.uss?fileID=7433441132597879392&amp;guid=e4adcc0314d86574f84027cd36ebaf9c&amp;type=3#PlayerHUD"/>
-    <ui:VisualElement name="PlayerHealthBG" class="player-health-bg">
-        <ui:VisualElement name="PlayerHealthFill" class="player-health-fill"/>
+    <ui:VisualElement name="PlayerHealthBG" class="player-health-bg" style="background-image: url(&quot;project://database/Assets/Scripts/UI_LifeBar_Empty.png?fileID=2800000&amp;guid=97f91a0a605294948b9fc49ecf2ba58a&amp;type=3#UI_LifeBar_Empty&quot;);">
+        <ui:VisualElement name="PlayerHealthFill" class="player-health-mask">
+            <ui:VisualElement class="player-health-image" style="background-image: url(&quot;project://database/Assets/Scripts/UI_LifeBar_Full.png?fileID=2800000&amp;guid=dc55ecff26ae0de4fa76345e6fffa71e&amp;type=3#UI_LifeBar_Full&quot;);"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="PlayerDrunkBG" class="player-drunk-bg" style="background-image: url(&quot;project://database/Assets/Scripts/UI_GourdeVide.png?fileID=2800000&amp;guid=625e0a480837a8b4b90fbe3281bd40b9&amp;type=3#UI_GourdeVide&quot;);">
+        <ui:VisualElement name="PlayerDrunkFill" class="player-drunk-mask">
+            <ui:VisualElement class="player-drunk-image" style="background-image: url(&quot;project://database/Assets/Scripts/UI_GourdeFill.png?fileID=2800000&amp;guid=e10c5c53092faf14da828bc00be3437a&amp;type=3#UI_GourdeFill&quot;);"/>
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

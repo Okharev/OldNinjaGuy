@@ -7,13 +7,12 @@ namespace Movement
     [ExecuteAlways]
     public class PlayerShaderPosition : MonoBehaviour
     {
-        private static readonly int PlayerPositionID = Shader.PropertyToID("_GlobalPlayerPosition");
+        private static readonly int PlayerPosId = Shader.PropertyToID("_GlobalPlayerPos");
 
         void Update()
         {
-            // À chaque frame, on envoie la position (X, Y, Z) du joueur à tous les shaders du jeu
-            // qui utilisent la variable "_GlobalPlayerPosition"
-            Shader.SetGlobalVector(PlayerPositionID, transform.position);
+            // Broadcast the player's world position to all shaders in the project
+            Shader.SetGlobalVector(PlayerPosId, transform.position);
         }
     }
 }

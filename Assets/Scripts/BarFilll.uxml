@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/BarFill.uss?fileID=7433441132597879392&amp;guid=890d67883aa1c884dba98b1e1b2dc194&amp;type=3#BarFill"/>
+    <ui:VisualElement name="HealthGourdRoot" style="width: 100px; height: 100px; position: relative; left: 50%;">
+        <ui:VisualElement name="Background" style="position: absolute; width: 100%; height: 100%; background-image: url(&quot;project://database/Assets/Scripts/UI_GourdeVide.png?fileID=2800000&amp;guid=30856832c5c227745bfdeb3c957e8360&amp;type=3#UI_GourdeVide&quot;);"/>
+        <ui:VisualElement name="FillMask" style="position: absolute; bottom: 0; width: 100%; height: 100%; overflow: hidden;">
+            <ui:VisualElement name="FillImage" style="position: absolute; bottom: 0; width: 100px; height: 100px; background-image: url(&quot;project://database/Assets/Scripts/UI_GourdeFill.png?fileID=2800000&amp;guid=2ae593a8d90e13049a55e3c0d2777727&amp;type=3#UI_GourdeFill&quot;);"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

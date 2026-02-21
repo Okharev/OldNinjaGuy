@@ -116,15 +116,15 @@ MonoBehaviour:
     m_RotationOrder: 4
   inputBufferTime: 0.2
   attackDurations:
-  - 0.1
-  - 0.1
-  - 0.2
+  - 0.4
+  - 0.4
+  - 0.8
   comboResetTime: 0.8
   attackInputBufferTime: 0.2
   attackLungeSpeeds:
+  - 1
+  - 1
   - 3
-  - 3
-  - 2
   enemyLayer:
     serializedVersion: 2
     m_Bits: 8
