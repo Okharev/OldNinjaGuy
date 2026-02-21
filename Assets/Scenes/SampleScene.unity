@@ -2412,6 +2412,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     - target: {fileID: 3575327698953884627, guid: 62c2a41ef0379e34ba77aaae3f7013b2, type: 3}
+      propertyPath: HitVFXPrefab
+      value: 
+      objectReference: {fileID: 7318884885477618373, guid: 24034da3947b6e04f9b8590627802686, type: 3}
+    - target: {fileID: 3575327698953884627, guid: 62c2a41ef0379e34ba77aaae3f7013b2, type: 3}
       propertyPath: attackAction
       value: 
       objectReference: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
@@ -2422,6 +2426,14 @@ PrefabInstance:
     - target: {fileID: 3575327698953884627, guid: 62c2a41ef0379e34ba77aaae3f7013b2, type: 3}
       propertyPath: lastAttackAoeRadius
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3575327698953884627, guid: 62c2a41ef0379e34ba77aaae3f7013b2, type: 3}
+      propertyPath: 'attackDurations.Array.data[1]'
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3575327698953884627, guid: 62c2a41ef0379e34ba77aaae3f7013b2, type: 3}
+      propertyPath: 'attackDurations.Array.data[2]'
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 3575327698953884627, guid: 62c2a41ef0379e34ba77aaae3f7013b2, type: 3}
       propertyPath: 'attackKnockbacks.Array.data[0]'

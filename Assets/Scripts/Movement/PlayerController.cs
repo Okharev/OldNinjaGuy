@@ -48,6 +48,8 @@ namespace Movement
         [Tooltip("Rayon du cercle d'explosion pour le dernier coup")]
         public float lastAttackAoeRadius = 4f; // NOUVEAU
 
+        [SerializeField] private GameObject HitVFXPrefab; // Assigne ici ton prefab de VFX d'impact
+
         private CharacterController controller;
         [SerializeField] private bool isMoving = false;
         private Vector3 movementInput;
@@ -232,11 +234,17 @@ namespace Movement
 
             foreach (Collider hit in hitColliders)
             {
+                
                 if (!enemiesHitThisAttack.Contains(hit))
                 {
                     enemiesHitThisAttack.Add(hit); 
                     EnemyController enemy = hit.GetComponentInParent<EnemyController>();
-                    
+                    // Spawn HitVFX at collision point
+                    if (HitVFXPrefab != null)
+                    {
+                        Vector3 hitPoint = hit.ClosestPoint(transform.position);
+                        Instantiate(HitVFXPrefab, hitPoint, Quaternion.identity);
+                    }
                     if (enemy != null)
                     {
                         // On envoie transform.position : l'ennemi calculera le recul radialement
