@@ -74,8 +74,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   animator: {fileID: 7840627297104683798}
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  dashAction: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  attackAction: {fileID: 0}
+  dashAction: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  attackAction: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   moveSpeed: 10
   turnSmoothTime: 0.07
   dashSpeed: 38
@@ -136,6 +136,8 @@ MonoBehaviour:
   normalHitboxSize: {x: 2, y: 1.5, z: 2}
   normalHitboxDistance: 1.5
   lastAttackAoeRadius: 4
+  HitVFXPrefab: {fileID: 7318884885477618373, guid: 24034da3947b6e04f9b8590627802686, type: 3}
+  isMoving: 0
 --- !u!143 &2376469073874571705
 CharacterController:
   m_ObjectHideFlags: 0

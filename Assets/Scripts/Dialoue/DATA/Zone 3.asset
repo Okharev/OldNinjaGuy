@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7560397b5d3378a468a5f05601876426, type: 3}
   m_Name: Zone 3
   m_EditorClassIdentifier: Assembly-CSharp::Dialoue.DialogueData
-  backgroundArt: {fileID: 2800000, guid: 120bf405064a0bb4ab4d8abadf569db5, type: 3}
+  backgroundArt: {fileID: 2800000, guid: ca5ce451e9db7c34bbc4ec9d282505da, type: 3}
   lines:
   - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
     text: Did you have many friends? Or were you popular in the village ?

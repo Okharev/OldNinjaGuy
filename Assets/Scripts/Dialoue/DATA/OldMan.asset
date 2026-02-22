@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dialoue.CharacterData
   characterName: Old Man
   nameColor: {r: 1, g: 0.8982735, b: 0.54905653, a: 1}
-  voiceSound: {fileID: 8300000, guid: d7fb5b7e8119a444998ef237afec19ec, type: 3}
+  voiceSound: {fileID: 8300000, guid: 8329582bbfc949140be9282c23a83c5e, type: 3}
   typingSpeed: 0.06
   basePitch: 0.51
   pitchVariation: 0.082

@@ -2,7 +2,7 @@
     <Style src="project://database/Assets/Scripts/Dialoue/DialogueUI.uss?fileID=7433441132597879392&amp;guid=cd479a1d3b30de74e96d233a8afdec10&amp;type=3#DialogueUI"/>
     <ui:VisualElement name="BackgroundArt" class="background-art"/>
     <ui:VisualElement name="DialogueContainer" class="dialogue-container">
-        <ui:VisualElement name="DialogueBox" class="dialogue-box" style="background-image: url(&quot;project://database/Assets/Scripts/Dialoue/UI_BoxDialogue.png?fileID=2800000&amp;guid=e7944cd0fc798654b9e3600a539fbb0a&amp;type=3#UI_BoxDialogue&quot;);">
+        <ui:VisualElement name="DialogueBox" class="dialogue-box">
             <ui:Label name="CharacterName" text="Nom du Personnage" class="character-name" style="background-image: none; -unity-background-scale-mode: scale-to-fit;"/>
             <ui:Label name="DialogueText" text="Ceci est un exemple de texte..." class="dialogue-text"/>
             <ui:Button name="ClickZone" class="click-zone"/>

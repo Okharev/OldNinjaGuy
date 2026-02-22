@@ -171,6 +171,8 @@ MonoBehaviour:
   attackCooldown: 1.5
   attackDamage: 15
   attackWindupTime: 0.5
+  sakePrefab: {fileID: 203185172512751213, guid: 71cf5f6f906a6e7419138442295d8a70, type: 3}
+  sakeDropChance: 55
   animator: {fileID: 4726485146734089438}
 --- !u!195 &5919144697738554088
 NavMeshAgent:

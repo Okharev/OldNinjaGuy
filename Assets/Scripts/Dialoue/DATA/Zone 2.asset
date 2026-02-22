@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7560397b5d3378a468a5f05601876426, type: 3}
   m_Name: Zone 2
   m_EditorClassIdentifier: Assembly-CSharp::Dialoue.DialogueData
-  backgroundArt: {fileID: 2800000, guid: a8977b5b08d9363489a6f4f7a34a6f07, type: 3}
+  backgroundArt: {fileID: 2800000, guid: 103b803746572e14486cb41024d6069d, type: 3}
   lines:
   - character: {fileID: 11400000, guid: 20ca1bf72c3f96c46869890db2259f25, type: 2}
     text: "Right\u2026 tell me another story\u2026"
@@ -64,7 +64,8 @@ MonoBehaviour:
         m_Calls: []
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "It isn\u2019t the same, I can tell you that! Let me get another drink\u2026  "
-    eventIDs: []
+    eventIDs:
+    - Zone2_Finished
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []

@@ -1,41 +1,40 @@
-
 .background-art {
     position: absolute;
-    /* On déborde légèrement de l'écran pour permettre le défilement */
-    left: -5%; right: -5%; top: -5%; bottom: -5%;
+    left: -5%;
+    right: -5%;
+    top: -5%;
+    bottom: -5%;
     -unity-background-scale-mode: scale-and-crop;
     opacity: 0;
     translate: 0 0;
-    /* On sépare les durées : opacité en 1s, translate instatané quand ça se cache */
     transition-property: opacity, translate;
     transition-duration: 1s, 0s;
 }
 
 .background-art--visible {
     opacity: 1;
-    /* On décale de 2% vers le bas et la droite */
     translate: 2% 2%;
-    /* Le défilement (translate) prend 30 secondes pour un effet très lent */
     transition-duration: 1s, 30s;
     transition-timing-function: ease-in-out, linear;
 }
 
-/* --- NOUVEAU : Écran noir --- */
 .black-screen {
     position: absolute;
-    left: 0; right: 0; top: 0; bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     background-color: rgb(0, 0, 0);
     opacity: 1;
     transition-property: opacity;
     transition-duration: 1s;
-    picking-mode: ignore; /* Important : ne bloque pas les clics quand c'est invisible */
+    picking-mode: ignore;
 }
 
 .black-screen--hidden {
     opacity: 0;
 }
 
-/* Utile pour forcer un écran noir instantané avant de commencer le fondu */
 .no-transition {
     transition-duration: 0s;
 }
@@ -55,7 +54,7 @@
 }
 
 .dialogue-box {
-    background-color: rgba(30, 30, 30, 0.9);
+    background-color: rgba(30, 30, 30, 0);
     border-width: 2px;
     border-color: rgb(255, 255, 255);
     border-radius: 15px;
@@ -63,6 +62,15 @@
     min-height: 150px;
     padding: 20px;
     position: relative;
+    background-image: url("project://database/Assets/Scripts/Dialoue/UI_BoxDialogue%201.png?fileID=2800000&guid=1753c51edf6efd146a4828e0be8d9510&type=3#UI_BoxDialogue 1");
+    border-left-color: rgba(255, 255, 255, 0);
+    border-right-color: rgba(255, 255, 255, 0);
+    border-top-color: rgba(255, 255, 255, 0);
+    border-bottom-color: rgba(255, 255, 255, 0);
+    padding-top: 40px;
+    padding-right: 40px;
+    padding-bottom: 40px;
+    padding-left: 110px;
 }
 
 .character-name {

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Dialoue.CharacterData
   characterName: Kid
   nameColor: {r: 0.50377357, g: 1, b: 0.9326144, a: 1}
-  voiceSound: {fileID: 8300000, guid: d7fb5b7e8119a444998ef237afec19ec, type: 3}
+  voiceSound: {fileID: 8300000, guid: 902756e143a1a9143b15ae0f9c70c21c, type: 3}
   typingSpeed: 0.05
   basePitch: 1.532
   pitchVariation: 0.1

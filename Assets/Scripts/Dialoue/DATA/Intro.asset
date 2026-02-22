@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7560397b5d3378a468a5f05601876426, type: 3}
   m_Name: Intro
   m_EditorClassIdentifier: Assembly-CSharp::Dialoue.DialogueData
-  backgroundArt: {fileID: 2800000, guid: 9116669d9ab2a4f4d85079042272ec6c, type: 3}
+  backgroundArt: {fileID: 2800000, guid: 8dcf70965f355c3408aa2ad777d59f19, type: 3}
   lines:
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "Here\u2019s my favourite bar, the Licaledo. Gonna buy you your first adult
@@ -56,8 +56,7 @@ MonoBehaviour:
   - character: {fileID: 11400000, guid: 90112a895fec9364f804c5cb0ebc31d6, type: 2}
     text: "When I was your age\u2026 "
     eventIDs:
-    - spawner_intro_1
-    - spawner_intro_2
+    - Intro_Finished
     onLineComplete:
       m_PersistentCalls:
         m_Calls: []

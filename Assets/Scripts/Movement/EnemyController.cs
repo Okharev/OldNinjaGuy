@@ -26,13 +26,20 @@ namespace Movement
         [Header("Ciblage")]
         public string playerTag = "Player";
         private Transform playerTransform;
-        private HealthComponent playerHealth; // [ADDED] Reference to the player's health
+        private HealthComponent playerHealth;
 
         [Header("Paramètres de combat")]
         public float attackRange = 2f; 
         public float attackCooldown = 1.5f;
-        public int attackDamage = 15;         // [ADDED] How much damage the enemy deals
-        public float attackWindupTime = 0.5f; // [ADDED] Must stay in range for 0.5s to hit
+        public int attackDamage = 15;         
+        public float attackWindupTime = 1.5f; 
+
+        [Header("Butin (Loot)")]
+        [Tooltip("Glisse ici le Prefab de ton objet Sake")]
+        public GameObject sakePrefab; 
+        [Tooltip("Chance en pourcentage de lâcher le sake (0 à 100)")]
+        [Range(0f, 100f)] 
+        public float sakeDropChance = 35f; // Voici tes 35% de chance de drop !
 
         [Header("Animator")]
         [SerializeField] public Animator animator;
@@ -40,7 +47,7 @@ namespace Movement
         private NavMeshAgent agent;
         private float lastAttackTime;
         private float attackRangeSqr; 
-        private float timeInRange;            // [ADDED] Tracks how long the player is in range
+        private float timeInRange;            
 
         private Vector3 knockbackVelocity;
         private float knockbackDuration;
@@ -59,10 +66,11 @@ namespace Movement
 
         void Start()
         {
+            enemyRenderers = GetComponentsInChildren<Renderer>();
+            
             agent = GetComponent<NavMeshAgent>();
             attackRangeSqr = attackRange * attackRange;
 
-            // Initialisation du feedback visuel
             if (enemyRenderers.Length > 0)
             {
                 originalColors = new Color[enemyRenderers.Length];
@@ -72,7 +80,6 @@ namespace Movement
                 }
             }
 
-            // Find the player AND their HealthComponent
             GameObject playerObj = GameObject.FindGameObjectWithTag(playerTag);
             if (playerObj != null) 
             {
@@ -103,10 +110,10 @@ namespace Movement
             else 
             {
                 ChasePlayer();
-                timeInRange = 0f; // [ADDED] Reset windup timer if player escapes range
+                timeInRange = 0f; 
             }
 
-            animator.SetBool("IsMoving", agent.speed > 0); // Update movement animation
+            animator.SetBool("IsMoving", agent.speed > 0); 
         }
 
         public void TakeDamage(int damage, Vector3 sourcePosition, float knockbackForce)
@@ -140,6 +147,19 @@ namespace Movement
 
         private void Die()
         {
+            // C'est ici que se joue la probabilité !
+            if (sakePrefab != null)
+            {
+                // On génère un nombre aléatoire entre 0 et 100
+                float randomValue = UnityEngine.Random.Range(0f, 100f);
+                
+                // Si la valeur tirée est de 35 ou moins, l'objet apparaît
+                if (randomValue <= sakeDropChance)
+                {
+                    Instantiate(sakePrefab, transform.position, Quaternion.identity);
+                }
+            }
+
             Destroy(gameObject);
         }
 
@@ -151,38 +171,30 @@ namespace Movement
 
         private void AttackPlayer()
         {
-            // Stop moving to attack
             if (!agent.isStopped) agent.isStopped = true;
             
-            // Look at the player
             Vector3 lookPos = playerTransform.position - transform.position;
             lookPos.y = 0;
             Quaternion rotation = Quaternion.LookRotation(lookPos);
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 5f);
 
-            // 1. Check if the cooldown has passed
             if (Time.time >= lastAttackTime + attackCooldown)
             {
-                // 2. Increase the windup timer
                 timeInRange += Time.deltaTime;
 
-                // 3. If we've been in range for 0.5s, STRIKE!
                 if (timeInRange >= attackWindupTime)
                 {
                     if (playerHealth != null)
                     {
-                        // Deal damage, pass position for knockback, and apply a knockback force of 5
                         playerHealth.TakeDamage(attackDamage, transform.position, 5f);
                     }
 
-                    // Reset timers
                     lastAttackTime = Time.time;
-                    timeInRange = 0f; // Reset windup so they have to charge the next attack
+                    timeInRange = 0f; 
                 }
             }
             else
             {
-                // Reset windup timer if we are currently on cooldown
                 timeInRange = 0f; 
             }
         }
