@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MI_Green
-  m_Shader: {fileID: -6465566751694194690, guid: 428e42a2ba62ad046a8d631070ff809d, type: 3}
+  m_Shader: {fileID: 4800000, guid: 1ab2bda306e14a9ebdbb6e9bcc54bc59, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -93,15 +93,20 @@ Material:
     - _Color: 0.4
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DepthBias: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _DitherWidth: 0.07
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _HalftoneScale: 75
+    - _HoleRadius: 0.252
     - _Metallic: 0
+    - _MinOpacity: 0.249
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
@@ -117,7 +122,7 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.2901961, g: 0.49019608, b: 0.17254902, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Color_1: {r: 0.28976378, g: 0.49056602, b: 0.17354931, a: 1}
     - _Colors: {r: 2.91, g: 0.57, b: 0.37, a: 0}

@@ -371,6 +371,7 @@ GameObject:
   - component: {fileID: 330585544}
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
+  - component: {fileID: 330585549}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -517,6 +518,22 @@ MonoBehaviour:
   rotationalWobbleAmount: 3.5
   postProcessMaterial: {fileID: 2100000, guid: f74a089a55e321e4fa408b4c4c8ae343, type: 2}
   pixelSize: 4
+--- !u!114 &330585549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c93467567a99484c85cfe494bee9acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SeeThroughController
+  playerTransform: {fileID: 1512539099}
+  transparentWallLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,7 +1082,7 @@ GameObject:
   - component: {fileID: 728665200}
   - component: {fileID: 728665199}
   - component: {fileID: 728665198}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1134,7 +1151,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 3c201b7e57faa9646a25fec7ede79d0f, type: 2}
-  - {fileID: 2100000, guid: 7b3207a42abe0ac4bb03354976179cfa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
