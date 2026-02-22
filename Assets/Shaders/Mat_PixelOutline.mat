@@ -46,6 +46,6 @@ Material:
     - _OutlineTint: {r: 0.85660374, g: 0.85660374, b: 0.85660374, a: 1}
     - _PixelResolution: {r: 320, g: 180, b: 0, a: 0}
     - _ShadowOutlineColor: {r: 0.09999997, g: 0.09999997, b: 0.19999996, a: 1}
-    - _SubpixelOffset: {r: 0.073589325, g: 0.13557817, b: 0, a: 0}
+    - _SubpixelOffset: {r: -0.16170272, g: -0.4882835, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
