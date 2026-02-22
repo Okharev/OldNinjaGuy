@@ -3,7 +3,32 @@ guid: ba69aec50eceee24d9d49c145f5925fc
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: contour_vitre_pagode
+    second: {fileID: 2100000, guid: b15de57aadfa3a44097980c4600e8dd8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mur_pagode
+    second: {fileID: 2100000, guid: b38fac409cac61745b8d2f5d9681baeb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: support_pagode
+    second: {fileID: 2100000, guid: fd0ad34caabe0954cad2a92e323b33ec, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tuiles_torii
+    second: {fileID: 2100000, guid: 3b85f5a9d60ec9244b376ef65857d629, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: vitre_pagode
+    second: {fileID: 2100000, guid: 0f1c99ac421d1924f89fcbaa11156cef, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -35,7 +60,7 @@ ModelImporter:
     lODScreenPercentages: []
     globalScale: 1
     meshCompression: 0
-    addColliders: 0
+    addColliders: 1
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importPhysicalCameras: 1

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System;
 using System.Collections;
+using UnityEditor.Animations;
 
 namespace Movement
 {
@@ -32,6 +33,9 @@ namespace Movement
         public float attackCooldown = 1.5f;
         public int attackDamage = 15;         // [ADDED] How much damage the enemy deals
         public float attackWindupTime = 0.5f; // [ADDED] Must stay in range for 0.5s to hit
+
+        [Header("Animator")]
+        [SerializeField] public Animator animator;
 
         private NavMeshAgent agent;
         private float lastAttackTime;
@@ -101,6 +105,8 @@ namespace Movement
                 ChasePlayer();
                 timeInRange = 0f; // [ADDED] Reset windup timer if player escapes range
             }
+
+            animator.SetBool("IsMoving", agent.speed > 0); // Update movement animation
         }
 
         public void TakeDamage(int damage, Vector3 sourcePosition, float knockbackForce)
