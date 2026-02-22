@@ -35,11 +35,20 @@ namespace Movement
         public float attackWindupTime = 1.5f; 
 
         [Header("Butin (Loot)")]
-        [Tooltip("Glisse ici le Prefab de ton objet Sake")]
         public GameObject sakePrefab; 
-        [Tooltip("Chance en pourcentage de lâcher le sake (0 à 100)")]
         [Range(0f, 100f)] 
-        public float sakeDropChance = 35f; // Voici tes 35% de chance de drop !
+        public float sakeDropChance = 35f; 
+
+        [Header("Audio")]
+        public AudioClip hitSound;
+        public AudioClip deathSound;
+        [Range(0f, 1f)]
+        public float soundVolume = 1f;
+        // NOUVEAU : Paramètres pour la variation du pitch
+        [Tooltip("Pitch minimum (plus grave)")]
+        public float minPitch = 0.85f;
+        [Tooltip("Pitch maximum (plus aigu)")]
+        public float maxPitch = 1.15f;
 
         [Header("Animator")]
         [SerializeField] public Animator animator;
@@ -66,8 +75,6 @@ namespace Movement
 
         void Start()
         {
-            enemyRenderers = GetComponentsInChildren<Renderer>();
-            
             agent = GetComponent<NavMeshAgent>();
             attackRangeSqr = attackRange * attackRange;
 
@@ -123,6 +130,9 @@ namespace Movement
             float healthPercent = Mathf.Clamp01((float)currentHealth / maxHealth);
             OnHealthChanged?.Invoke(healthPercent);
 
+            // NOUVEAU : On utilise notre fonction personnalisée
+            PlaySoundWithPitch(hitSound);
+
             StopAllCoroutines(); 
             StartCoroutine(FlashRoutine());
 
@@ -147,13 +157,13 @@ namespace Movement
 
         private void Die()
         {
-            // C'est ici que se joue la probabilité !
+            // NOUVEAU : On utilise notre fonction personnalisée
+            PlaySoundWithPitch(deathSound);
+
             if (sakePrefab != null)
             {
-                // On génère un nombre aléatoire entre 0 et 100
                 float randomValue = UnityEngine.Random.Range(0f, 100f);
                 
-                // Si la valeur tirée est de 35 ou moins, l'objet apparaît
                 if (randomValue <= sakeDropChance)
                 {
                     Instantiate(sakePrefab, transform.position, Quaternion.identity);
@@ -161,6 +171,31 @@ namespace Movement
             }
 
             Destroy(gameObject);
+        }
+
+        // NOUVEAU : Fonction personnalisée pour jouer un son avec un pitch aléatoire
+        private void PlaySoundWithPitch(AudioClip clip)
+        {
+            if (clip == null) return;
+
+            // 1. On crée un objet temporaire invisible
+            GameObject audioObj = new GameObject("TempAudio");
+            audioObj.transform.position = transform.position;
+
+            // 2. On lui ajoute un composant AudioSource
+            AudioSource audioSource = audioObj.AddComponent<AudioSource>();
+            audioSource.clip = clip;
+            audioSource.volume = soundVolume;
+            audioSource.spatialBlend = 1f; // Rend le son 3D (il sera plus fort si on est près)
+
+            // 3. On choisit un pitch aléatoire entre nos deux valeurs
+            audioSource.pitch = UnityEngine.Random.Range(minPitch, maxPitch);
+
+            // 4. On joue le son
+            audioSource.Play();
+
+            // 5. On programme la destruction de l'objet à la fin du son
+            Destroy(audioObj, clip.length);
         }
 
         private void ChasePlayer()

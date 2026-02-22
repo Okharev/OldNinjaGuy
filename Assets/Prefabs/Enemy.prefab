@@ -173,6 +173,9 @@ MonoBehaviour:
   attackWindupTime: 0.5
   sakePrefab: {fileID: 203185172512751213, guid: 71cf5f6f906a6e7419138442295d8a70, type: 3}
   sakeDropChance: 55
+  hitSound: {fileID: 8300000, guid: db13a84a65b2b5b44a3536978336b974, type: 3}
+  deathSound: {fileID: 8300000, guid: 9818f38a744a88546af2bdef57d96c5c, type: 3}
+  soundVolume: 0.777
   animator: {fileID: 4726485146734089438}
 --- !u!195 &5919144697738554088
 NavMeshAgent:
