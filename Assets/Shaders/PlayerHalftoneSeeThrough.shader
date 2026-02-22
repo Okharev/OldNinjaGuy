@@ -14,6 +14,10 @@
         [Header(Occlusion Settings)]
         _MinOpacity ("Minimum Opacity (Hole)", Range(0, 1)) = 0.1 
         _DepthBias ("Player Depth Bias", Float) = 0.0 
+
+        // NOUVEAU : Paramètre pour contrôler le Cel-Shading
+        [Header(Retro Lighting)]
+        _LightSteps ("Light Steps (Cel Shading)", Range(1, 10)) = 4.0
     }
     SubShader
     {
@@ -24,12 +28,9 @@
             "Queue" = "AlphaTest" 
         }
 
-        // =========================================================
-        // HLSLINCLUDE : Ce bloc contient le code partagé par TOUTES les passes
-        // Cela évite de réécrire la logique du trou 3 fois !
-        // =========================================================
         HLSLINCLUDE
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+        #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 
         CBUFFER_START(UnityPerMaterial)
             float4 _BaseColor;
@@ -39,6 +40,7 @@
             float _HalftoneScale;
             float _MinOpacity;
             float _DepthBias;
+            float _LightSteps; // NOUVEAU : On déclare la variable ici
         CBUFFER_END
 
         float4 _GlobalPlayerPos;
@@ -47,25 +49,22 @@
         TEXTURE2D(_MainTex);
         SAMPLER(sampler_MainTex);
 
-        // Données envoyées par le modèle 3D
         struct Attributes
         {
             float4 positionOS : POSITION;
             float2 uv : TEXCOORD0;
-            float3 normalOS : NORMAL; // Nécessaire pour l'Outline !
+            float3 normalOS : NORMAL; 
         };
 
-        // Données transmises du Vertex au Fragment
         struct Varyings
         {
             float4 positionHCS : SV_POSITION;
             float4 screenPos : TEXCOORD0; 
             float3 positionWS : TEXCOORD1;
             float2 uv : TEXCOORD2;
-            float3 normalWS : TEXCOORD3; // Normales dans l'espace monde
+            float3 normalWS : TEXCOORD3; 
         };
 
-        // Fonction partagée pour initialiser les variables (Vertex)
         Varyings SharedVert(Attributes IN)
         {
             Varyings OUT;
@@ -73,11 +72,10 @@
             OUT.screenPos = ComputeScreenPos(OUT.positionHCS);
             OUT.positionWS = TransformObjectToWorld(IN.positionOS.xyz);
             OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
-            OUT.normalWS = TransformObjectToWorldNormal(IN.normalOS); // Calcul des normales
+            OUT.normalWS = TransformObjectToWorldNormal(IN.normalOS); 
             return OUT;
         }
 
-        // Fonction partagée pour découper les pixels (Fragment)
         void ApplyHalftoneClip(Varyings IN)
         {
             float4 playerHCS = TransformWorldToHClip(_GlobalPlayerPos.xyz);
@@ -112,18 +110,17 @@
             float2 localUV = frac(screenGridUV) - 0.5; 
             float dotThreshold = length(localUV) * 1.414;
             
-            // C'est ici que la magie opère : si le pixel échoue, il est détruit pour l'affichage,
-            // la profondeur ET les normales !
             clip(opacity - dotThreshold);
         }
         ENDHLSL
 
         // =========================================================
-        // PASSE 1 : UniversalForward (Dessine les couleurs à l'écran)
+        // PASSE 1 : UniversalForward 
         // =========================================================
+
         Pass
         {
-            Name "ForwardUnlit"
+            Name "ForwardLit"
             Tags { "LightMode" = "UniversalForward" }
             Cull Back
             ZWrite On
@@ -132,20 +129,88 @@
             #pragma vertex vert
             #pragma fragment frag
 
+            #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
+            #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS _FORWARD_PLUS
+            #pragma multi_compile_fragment _ _ADDITIONAL_LIGHT_SHADOWS
+            #pragma multi_compile_fragment _ _SHADOWS_SOFT
+
             Varyings vert(Attributes IN) { return SharedVert(IN); }
 
             half4 frag(Varyings IN) : SV_Target
             {
-                ApplyHalftoneClip(IN); // Applique le trou
+                ApplyHalftoneClip(IN);
                 
                 half4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
-                return texColor * _BaseColor; // Affiche la couleur
+                half3 albedo = texColor.rgb * _BaseColor.rgb;
+                float3 normalWS = normalize(IN.normalWS);
+
+                // --- 1. LUMIÈRE PRINCIPALE & OMBRES ---
+                float4 shadowCoord = TransformWorldToShadowCoord(IN.positionWS);
+                Light mainLight = GetMainLight(shadowCoord); 
+                
+                // Angle de la lumière en escalier
+                float NdotL = saturate(dot(normalWS, mainLight.direction));
+                NdotL = floor(NdotL * _LightSteps) / _LightSteps;
+                
+                // NOUVEAU : Ombre en escalier
+                float mainShadow = mainLight.shadowAttenuation;
+                mainShadow = floor(mainShadow * _LightSteps) / _LightSteps;
+                
+                // Application de l'ombre stylisée
+                float3 diffuseLight = mainLight.color * NdotL * mainLight.distanceAttenuation * mainShadow;
+                float3 ambientLight = SampleSH(normalWS);
+                
+                float3 finalColor = albedo * (diffuseLight + ambientLight);
+
+                // --- 2. LUMIÈRES ADDITIONNELLES ---
+                InputData inputData = (InputData)0;
+                inputData.positionWS = IN.positionWS;
+                inputData.normalizedScreenSpaceUV = IN.positionHCS.xy / _ScreenParams.xy;
+
+                uint lightCount = GetAdditionalLightsCount();
+                
+                LIGHT_LOOP_BEGIN(lightCount)
+                    Light addLight = GetAdditionalLight(lightIndex, IN.positionWS);
+                    
+                    // Angle de la lumière additionnelle en escalier
+                    float addNdotL = saturate(dot(normalWS, addLight.direction));
+                    addNdotL = floor(addNdotL * _LightSteps) / _LightSteps;
+                    
+                    // NOUVEAU : Ombre additionnelle en escalier
+                    float addShadow = addLight.shadowAttenuation;
+                    addShadow = floor(addShadow * _LightSteps) / _LightSteps;
+                    
+                    float3 addDiffuse = addLight.color * addNdotL * addLight.distanceAttenuation * addShadow;
+                    finalColor += albedo * addDiffuse;
+                LIGHT_LOOP_END
+
+                return half4(finalColor, texColor.a * _BaseColor.a);
             }
             ENDHLSL
         }
 
         // =========================================================
-        // PASSE 2 : DepthOnly (Dessine la profondeur pour ton Outline)
+        // PASSE 2 : ShadowCaster 
+        // =========================================================
+        Pass
+        {
+            Name "ShadowCaster"
+            Tags { "LightMode" = "ShadowCaster" }
+            ZWrite On
+            ZTest LEqual
+            ColorMask 0
+            Cull Back
+
+            HLSLPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            Varyings vert(Attributes IN) { return SharedVert(IN); }
+            half4 frag(Varyings IN) : SV_Target { ApplyHalftoneClip(IN); return 0; }
+            ENDHLSL
+        }
+
+        // =========================================================
+        // PASSE 3 : DepthOnly 
         // =========================================================
         Pass
         {
@@ -153,24 +218,18 @@
             Tags { "LightMode" = "DepthOnly" }
             Cull Back
             ZWrite On
-            ColorMask 0 // On n'a pas besoin de couleur, juste écrire dans le ZBuffer
+            ColorMask 0 
 
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
             Varyings vert(Attributes IN) { return SharedVert(IN); }
-
-            half4 frag(Varyings IN) : SV_Target
-            {
-                ApplyHalftoneClip(IN); // Applique le trou dans la profondeur
-                return 0; // La caméra s'occupe de sauvegarder la distance
-            }
+            half4 frag(Varyings IN) : SV_Target { ApplyHalftoneClip(IN); return 0; }
             ENDHLSL
         }
 
         // =========================================================
-        // PASSE 3 : DepthNormals (Dessine les normales pour ton Outline)
+        // PASSE 4 : DepthNormals 
         // =========================================================
         Pass
         {
@@ -182,16 +241,8 @@
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-
             Varyings vert(Attributes IN) { return SharedVert(IN); }
-
-            half4 frag(Varyings IN) : SV_Target
-            {
-                ApplyHalftoneClip(IN); // Applique le trou dans les normales
-                
-                // URP attend qu'on lui renvoie l'orientation 3D (Normal) du pixel
-                return half4(NormalizeNormalPerPixel(IN.normalWS), 0.0);
-            }
+            half4 frag(Varyings IN) : SV_Target { ApplyHalftoneClip(IN); return half4(NormalizeNormalPerPixel(IN.normalWS), 0.0); }
             ENDHLSL
         }
     }

@@ -104,9 +104,11 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _HalftoneScale: 75
-    - _HoleRadius: 0.3
+    - _HoleRadius: 0.4
+    - _HoleVisibilityMask: 0
+    - _LightSteps: 4
     - _Metallic: 0
-    - _MinOpacity: 0.2
+    - _MinOpacity: 0.15
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0

@@ -109,15 +109,22 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
+    - _DepthBias: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
+    - _DitherWidth: 0.07
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _HalftoneScale: 75
+    - _HoleRadius: 0.4
+    - _HoleVisibilityMask: 0
+    - _LightSteps: 4
     - _Metallic: 0
+    - _MinOpacity: 0.15
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
