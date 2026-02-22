@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using System;
 using System.Collections;
-using UnityEditor.Animations;
-using UnityEngine.VFX;
 
 namespace Movement
 {
