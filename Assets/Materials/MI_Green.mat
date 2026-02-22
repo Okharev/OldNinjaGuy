@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MI_Green
-  m_Shader: {fileID: -6465566751694194690, guid: 428e42a2ba62ad046a8d631070ff809d, type: 3}
+  m_Shader: {fileID: 4800000, guid: 1ab2bda306e14a9ebdbb6e9bcc54bc59, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -96,7 +96,7 @@ Material:
     - _DepthBias: 0.5
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
-    - _DitherWidth: 0.035
+    - _DitherWidth: 0.07
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
@@ -104,9 +104,9 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _HalftoneScale: 75
-    - _HoleRadius: 0.129
+    - _HoleRadius: 0.3
     - _Metallic: 0
-    - _MinOpacity: 0.088
+    - _MinOpacity: 0.2
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
