@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Dialoue;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace Movement
 {
@@ -49,6 +50,7 @@ namespace Movement
         public float lastAttackAoeRadius = 4f; // NOUVEAU
 
         [SerializeField] private GameObject HitVFXPrefab; // Assigne ici ton prefab de VFX d'impact
+        [SerializeField] private GameObject Trail; // Assigne ici ton prefab de traînée pour le dash
 
         private CharacterController controller;
         [SerializeField] private bool isMoving = false;
@@ -142,6 +144,15 @@ namespace Movement
             else
             {
                 animator.SetLayerWeight(2, 0); // Désactive la couche du dernier coup
+            }
+
+            if (isDashing)
+            {
+                GetComponentInChildren<TrailRenderer>().enabled = true;
+            }
+            else
+            {
+                GetComponentInChildren<TrailRenderer>().enabled = false;
             }
         }
 

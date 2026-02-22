@@ -3,6 +3,7 @@ using UnityEngine.AI;
 using System;
 using System.Collections;
 using UnityEditor.Animations;
+using UnityEngine.VFX;
 
 namespace Movement
 {
@@ -52,6 +53,11 @@ namespace Movement
 
         [Header("Animator")]
         [SerializeField] public Animator animator;
+
+        [Header("VFX")]
+        public GameObject deathVFXPrefab;
+        public float deathVFXDuration = 8f;
+        private GameObject VfxInstance;
 
         private NavMeshAgent agent;
         private float lastAttackTime;
@@ -159,6 +165,8 @@ namespace Movement
         {
             // NOUVEAU : On utilise notre fonction personnalisée
             PlaySoundWithPitch(deathSound);
+
+            VfxInstance = Instantiate(deathVFXPrefab, transform.position, Quaternion.identity, null);
 
             if (sakePrefab != null)
             {

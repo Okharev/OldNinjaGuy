@@ -176,7 +176,11 @@ MonoBehaviour:
   hitSound: {fileID: 8300000, guid: db13a84a65b2b5b44a3536978336b974, type: 3}
   deathSound: {fileID: 8300000, guid: 9818f38a744a88546af2bdef57d96c5c, type: 3}
   soundVolume: 0.777
+  minPitch: 0.85
+  maxPitch: 1.15
   animator: {fileID: 4726485146734089438}
+  deathVFXPrefab: {fileID: 3396882841819984951, guid: 887a99556b5fe9a45b8cfa0db88d1704, type: 3}
+  deathVFXDuration: 8
 --- !u!195 &5919144697738554088
 NavMeshAgent:
   m_ObjectHideFlags: 0
